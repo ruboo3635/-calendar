@@ -1,0 +1,333 @@
+// ConsoleApplication8.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+//
+
+#include "pch.h"
+#include <iostream>
+#include <stdio.h>
+#include <windows.h>
+#include <math.h>
+
+#include<stdio.h>
+int main()
+{
+	printf("This calendar is design for year after 1583\n");
+	printf("please type the year,then click enter\n");
+	int year, pyear, month = 1, leap = 0, century = 0, amonth, space1, spaceoff1, mainloop;
+	int loop1, loop2;
+	char a[12];
+	amonth = month;
+	scanf_s("%d", &year);
+	if (year < 1583)
+		printf("wrong number");
+	century = year / 100;
+	pyear = year - 100 * century;
+	printf("century = %d", century);
+	printf("pyear = %d", pyear);
+	void month31(int loop1, int loop2);
+	void month30(int loop1, int loop2);
+	void month29(int loop1, int loop2);
+	void month28(int loop1, int loop2);
+	int leapyear(int year);
+	int zellerformula(int century, int pyear, int amonth);
+	leap = leapyear(year);
+	for (mainloop = 1; mainloop <= 12; mainloop = mainloop + 1)
+	{
+		/*switch (mainloop)
+		{
+		case'1':a[0] = 'jan';
+		case'2':a[1] = 'feb';
+		case'3':a[2] = 'mar';
+		case'4':a[3] = 'apr';
+		case'5':a[4] = 'may';
+		case'6':a[5] = 'jun';
+		case'7':a[6] = 'jul';
+		case'8':a[7] = 'aug';
+		case'9':a[8] = 'sep';
+		case'10':a[9] = 'oct';
+		case'11':a[10] = 'nov';
+		case'12':a[11] = 'dec';
+		}*/
+		printf("       %d\n", mainloop);
+		if (leap == 0)
+		{
+			space1 = zellerformula(century, pyear, amonth);
+			//printf("space = %d\n", space1);
+			for (loop1 = 0; loop1 < space1 - 1; loop1 = loop1 + 1)
+			{
+				printf("   ");
+			}
+			spaceoff1 = 7 - space1;
+			for (loop2 = 1; loop2 <= spaceoff1 + 1; loop2 = loop2 + 1)
+			{
+				printf("%d  ", loop2);
+			}
+			printf("\n");
+			if (amonth % 2 != 0)
+			{
+				if (amonth != 9)
+				{
+					if (amonth != 11)
+						month31(loop1, loop2);
+					else
+						month30(loop1, loop2);
+				}
+				else
+				{
+					month30(loop1, loop2);
+				}
+			}
+			else
+			{
+				if (amonth != 2)
+				{
+					if (amonth != 8)
+					{
+						if (amonth != 10)
+						{
+							if (amonth != 12)
+								month30(loop1, loop2);
+							else
+								month31(loop1, loop2);
+						}
+						else
+							month31(loop1, loop2);
+					}
+					else
+						month31(loop1, loop2);
+				}
+				else
+				{
+					month28(loop1, loop2);
+				}
+			}
+		}
+		else
+		{
+			space1 = zellerformula(century, pyear, amonth);
+			//printf("space = %d\n", space1);
+			for (loop1 = 0; loop1 < space1 - 1; loop1 = loop1 + 1)
+			{
+				printf("   ");
+			}
+			spaceoff1 = 7 - space1;
+			for (loop2 = 1; loop2 <= spaceoff1 + 1; loop2 = loop2 + 1)
+			{
+				printf("%d  ", loop2);
+			}
+			printf("\n");
+			if (amonth % 2 != 0)
+			{
+				if (amonth != 9)
+				{
+					if (amonth != 11)
+						month31(loop1, loop2);
+					else
+						month30(loop1, loop2);
+				}
+				else
+				{
+					month30(loop1, loop2);
+				}
+			}
+			else
+			{
+				if (amonth != 2 )
+				{
+					if (amonth != 8)
+					{
+						if (amonth != 10)
+						{
+							if (amonth != 12)
+								month30(loop1, loop2);
+							else
+								month31(loop1, loop2);
+						}
+						else
+							month31(loop1, loop2);
+					}
+					else
+						month31(loop1, loop2);
+				}
+				else
+				{
+						month29(loop1, loop2);
+				}
+			}
+		}
+		amonth = amonth + 1;
+		//printf("amonth = %d\n", amonth);
+	}
+	return 0;
+}
+
+
+int leapyear(int year)
+{
+	int leap = 0;
+	if (year % 4 == 0)
+	{
+		if (year % 100 != 0)
+			leap = 1;
+		else
+			if (year % 400 == 0)
+				leap = 1;
+			else
+				leap = 0;
+	}
+	else
+		leap = 0;
+	return(leap);
+}
+
+int zellerformula(int century, int pyear, int amonth)
+{
+	int a, b, c, answer, finalanswer, foryear, ffanswer = 0;
+	int formonth = 0;
+	if (amonth < 3)
+	{
+		formonth = 12 + amonth;
+		foryear = pyear - 1;
+	}
+	else
+	{
+		formonth = amonth;
+		foryear = pyear;
+	}
+	//printf("foryear = %d\n", foryear);
+	//printf("formonth = %d\n", formonth);
+	//printf("century = %d\n", century);
+	a = century / 4;
+	b = foryear / 4;
+	c = 13 * (formonth + 1) / 5;
+	answer = a - 2 * century + foryear + b + c;
+	if (answer == 0)
+		ffanswer = 7;
+	else
+	{
+		if (answer < 0)
+		{
+			finalanswer = answer + 7;
+		}
+		else
+			ffanswer = answer % 7;
+		//printf("ffanswer = %d\n", ffanswer);
+	}
+	if (ffanswer == 0)
+		ffanswer = 7;
+	return(ffanswer);
+}
+
+void month31(int loop1, int loop2)
+{
+	int loop3, loop4, loop5, loop6;
+	for (loop3 = loop2; loop3 <= loop2 + 6; loop3 = loop3 + 1)
+	{
+		printf("%d ", loop3);
+		if (loop3 < 10)
+			printf(" ");
+	}
+
+	printf("\n");
+	for (loop4 = loop3; loop4 <= loop3 + 6; loop4 = loop4 + 1)
+	{
+		printf("%d ", loop4);
+	}
+	printf("\n");
+	for (loop5 = loop4; loop5 <= loop4 + 6; loop5 = loop5 + 1)
+	{
+		printf("%d ", loop5);
+	}
+	printf("\n");
+	for (loop6 = loop5; loop6 <= 31; loop6 = loop6 + 1)
+	{
+		printf("%d ", loop6);
+	}
+	printf("\n\n");
+}
+
+void month30(int loop1, int loop2)
+{
+	int loop3, loop4, loop5, loop6;
+	for (loop3 = loop2; loop3 <= loop2 + 6; loop3 = loop3 + 1)
+	{
+		printf("%d ", loop3);
+		if (loop3 < 10)
+			printf(" ");
+	}
+
+	printf("\n");
+	for (loop4 = loop3; loop4 <= loop3 + 6; loop4 = loop4 + 1)
+	{
+		printf("%d ", loop4);
+	}
+	printf("\n");
+	for (loop5 = loop4; loop5 <= loop4 + 6; loop5 = loop5 + 1)
+	{
+		printf("%d ", loop5);
+	}
+	printf("\n");
+	for (loop6 = loop5; loop6 <= 30; loop6 = loop6 + 1)
+	{
+		printf("%d ", loop6);
+	}
+	printf("\n\n");
+}
+
+void month29(int loop1, int loop2)
+{
+	int loop3, loop4, loop5, loop6;
+	for (loop3 = loop2; loop3 <= loop2 + 6; loop3 = loop3 + 1)
+	{
+		printf("%d ", loop3);
+		if (loop3 < 10)
+			printf(" ");
+	}
+
+	printf("\n");
+	for (loop4 = loop3; loop4 <= loop3 + 6; loop4 = loop4 + 1)
+	{
+		printf("%d ", loop4);
+	}
+	printf("\n");
+	for (loop5 = loop4; loop5 <= loop4 + 6; loop5 = loop5 + 1)
+	{
+		printf("%d ", loop5);
+	}
+	printf("\n");
+	for (loop6 = loop5; loop6 <= 29; loop6 = loop6 + 1)
+	{
+		printf("%d ", loop6);
+	}
+	printf("\n\n");
+}
+
+void month28(int loop1, int loop2)
+{
+	int loop3, loop4, loop5, loop6;
+	for (loop3 = loop2; loop3 <= loop2 + 6; loop3 = loop3 + 1)
+	{
+		printf("%d ", loop3);
+		if (loop3 < 10)
+			printf(" ");
+	}
+
+	printf("\n");
+	for (loop4 = loop3; loop4 <= loop3 + 6; loop4 = loop4 + 1)
+	{
+		printf("%d ", loop4);
+	}
+	printf("\n");
+	for (loop5 = loop4; loop5 <= loop4 + 6; loop5 = loop5 + 1)
+	{
+		printf("%d ", loop5);
+	}
+	printf("\n");
+	if (loop4 + 6 < 28)
+	{
+		for (loop6 = loop5; loop6 <= 28; loop6 = loop6 + 1)
+		{
+			printf("%d ", loop6);
+		}
+		printf("\n\n");
+	}
+}
